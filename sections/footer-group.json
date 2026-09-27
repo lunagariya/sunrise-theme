@@ -1,0 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "products": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Products",
+            "menu": ""
+          }
+        },
+        "about": {
+          "type": "link_list",
+          "settings": {
+            "heading": "About",
+            "menu": ""
+          }
+        },
+        "store_ghosi_gali": {
+          "type": "store",
+          "settings": {
+            "name": "Ghosi Gali",
+            "address": "20, Ghosi Gali, Darshan Lal Chowk, Paltan Bazaar, Dehradun, Uttarakhand 248001",
+            "directions_url": "https://www.google.com/maps/search/?api=1&query=20%2C%20Ghosi%20Gali%2C%20Darshan%20Lal%20Chowk%2C%20Paltan%20Bazaar%2C%20Dehradun%2C%20Uttarakhand%20248001",
+            "directions_label": "Get directions"
+          }
+        },
+        "store_kaulagarh": {
+          "type": "store",
+          "settings": {
+            "name": "Kaulagarh Rd",
+            "address": "893, 873, Kaulagarh Rd, Krishna Nagar, Dehradun, Uttarakhand 248001",
+            "directions_url": "https://www.google.com/maps/search/?api=1&query=893%2C%20873%2C%20Kaulagarh%20Rd%2C%20Krishna%20Nagar%2C%20Dehradun%2C%20Uttarakhand%20248001",
+            "directions_label": "Get directions"
+          }
+        }
+      },
+      "block_order": [
+        "products",
+        "about",
+        "store_ghosi_gali",
+        "store_kaulagarh"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "footer_logo": "",
+        "background_color": "#4A2E22",
+        "heading_color": "#FFCD00",
+        "text_color": "#FFF8F2",
+        "stores_heading": "Our Stores",
+        "follow_heading": "Follow",
+        "newsletter_enable": false,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": false,
+        "show_social": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": false,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 72,
+        "padding_bottom": 180
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

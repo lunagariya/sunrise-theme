@@ -1,0 +1,218 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'section-people-also-bought.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign selected_products_count = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign selected_products_count = selected_products_count | plus: 1
+    endif
+  endfor
+
+  assign rendered_products_count = selected_products_count
+  if request.design_mode
+    assign rendered_products_count = section.blocks.size
+  endif
+-%}
+
+{%- if rendered_products_count > 0 -%}
+  {%- style -%}
+    #PeopleAlsoBought-{{ section.id }} {
+      --people-also-bought-media: {{ section.settings.media_background }};
+      --people-also-bought-heading: {{ section.settings.heading_color }};
+      --people-also-bought-accent: {{ section.settings.accent_color }};
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      #PeopleAlsoBought-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  <section
+    id="PeopleAlsoBought-{{ section.id }}"
+    class="people-also-bought color-{{ section.settings.color_scheme }} gradient"
+  >
+    <slider-component class="people-also-bought__inner page-width isolate">
+      <div class="people-also-bought__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="people-also-bought__heading inline-richtext">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if rendered_products_count > 1 -%}
+          <div class="people-also-bought__controls slider-buttons no-js-hidden">
+            <button
+              type="button"
+              class="people-also-bought__arrow slider-button slider-button--prev"
+              name="previous"
+              aria-label="{{ 'general.slider.previous_slide' | t }}"
+              aria-controls="Slider-PeopleAlsoBought-{{ section.id }}"
+            >
+              <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+            </button>
+            <button
+              type="button"
+              class="people-also-bought__arrow slider-button slider-button--next"
+              name="next"
+              aria-label="{{ 'general.slider.next_slide' | t }}"
+              aria-controls="Slider-PeopleAlsoBought-{{ section.id }}"
+            >
+              <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <ul
+        id="Slider-PeopleAlsoBought-{{ section.id }}"
+        class="people-also-bought__slider slider list-unstyled"
+        role="list"
+        aria-label="{{ section.settings.heading | escape }}"
+      >
+        {%- for block in section.blocks -%}
+          {%- assign card_product = block.settings.product -%}
+          {%- assign card_section_id = section.id | append: '-' | append: block.id -%}
+          {%- if card_product == blank and request.design_mode == false -%}
+            {%- continue -%}
+          {%- endif -%}
+
+          <li
+            id="Slide-PeopleAlsoBought-{{ section.id }}-{{ forloop.index }}"
+            class="people-also-bought__slide slider__slide"
+            {{ block.shopify_attributes }}
+          >
+            <div class="people-also-bought__card{% if card_product == blank %} people-also-bought__card--placeholder{% endif %}">
+              {%- if card_product != blank and card_product.tags contains section.settings.veg_tag -%}
+                <span class="people-also-bought__veg" role="img" aria-label="Vegetarian"></span>
+              {%- endif -%}
+
+              {% render 'card-product',
+                card_product: card_product,
+                media_aspect_ratio: 'square',
+                image_shape: 'default',
+                show_secondary_image: false,
+                show_vendor: false,
+                show_rating: false,
+                lazy_load: true,
+                skip_styles: true,
+                section_id: card_section_id,
+                placeholder_image: 'product-1'
+              %}
+
+              {%- if card_product != blank -%}
+                <p class="people-also-bought__price">
+                  <strong>{{ card_product.price_min | money_without_trailing_zeros }}</strong>
+                  <span>onwards</span>
+                </p>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </slider-component>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "People Also Bought",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "People also bought"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "media_background",
+      "label": "Image panel background",
+      "default": "#FDF5ED"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading and title color",
+      "default": "#7A4B32"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Price and arrow color",
+      "default": "#F26522"
+    },
+    {
+      "type": "text",
+      "id": "veg_tag",
+      "label": "Vegetarian product tag",
+      "default": "veg"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "People Also Bought",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

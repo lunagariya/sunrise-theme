@@ -1,0 +1,57 @@
+{{ 'section-brand-stamp.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign stamp_image = section.settings.stamp_image
+  assign stamp_alt = stamp_image.alt | default: 'Brand stamp'
+-%}
+
+{%- if stamp_image != blank or request.design_mode -%}
+  <section id="BrandStamp-{{ section.id }}" class="brand-stamp">
+    <div class="brand-stamp__wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none" focusable="false">
+        <path d="M0 0H1440V64C1282 129 1134 119 985 72C808 16 675 21 512 81C320 152 151 139 0 78V0Z" />
+      </svg>
+    </div>
+
+    <div class="brand-stamp__content page-width">
+      {%- if stamp_image != blank -%}
+        {{
+          stamp_image
+          | image_url: width: 1000
+          | image_tag:
+            loading: 'lazy',
+            widths: '240, 360, 480, 720, 1000',
+            sizes: '(min-width: 750px) 380px, 72vw',
+            class: 'brand-stamp__image',
+            alt: stamp_alt
+        }}
+      {%- else -%}
+        <div class="brand-stamp__placeholder">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          <p>Select the complete stamp image</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brand stamp",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "stamp_image",
+      "label": "Complete stamp image",
+      "info": "Upload the finished stamp artwork, including its text, border, and illustration."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand stamp"
+    }
+  ]
+}
+{% endschema %}

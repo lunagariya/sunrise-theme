@@ -1,0 +1,677 @@
+.sunrise-product {
+  --sunrise-accent: var(--sunrise-product-accent, rgb(var(--color-button)));
+  --sunrise-heading: var(--sunrise-product-heading, rgb(var(--color-foreground)));
+  --sunrise-muted: var(--sunrise-product-muted, rgba(var(--color-foreground), 0.62));
+  --sunrise-rule: rgba(var(--color-foreground), 0.12);
+  display: block;
+}
+
+.sunrise-product__page {
+  max-width: none;
+  padding: 0;
+}
+
+.sunrise-product__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+}
+
+.sunrise-product__media {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: min(82rem, calc(100vh - var(--header-height, 0px)));
+  align-items: center;
+  background: var(--sunrise-product-media-background, rgb(var(--color-background)));
+  overflow: hidden;
+}
+
+.sunrise-product__media media-gallery {
+  width: 100%;
+}
+
+.sunrise-product__media slider-component {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.sunrise-product__media .product__media-list {
+  margin: 0;
+}
+
+.sunrise-product__media .product__media-item {
+  width: 100%;
+  max-width: 100%;
+}
+
+.sunrise-product__media .product-media-container,
+.sunrise-product__media .global-media-settings {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sunrise-product__media .product__media img {
+  object-fit: contain;
+}
+
+.sunrise-product__media .thumbnail-slider {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 2;
+  justify-content: center;
+}
+
+.sunrise-product__media .thumbnail-list,
+.sunrise-product__media .thumbnail-list.slider--tablet-up,
+.sunrise-product__media .thumbnail-slider .thumbnail-list.slider {
+  flex: 0 1 auto;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.5rem;
+}
+
+.sunrise-product__media .thumbnail-list__item.slider__slide,
+.sunrise-product__media .thumbnail-list.slider--tablet-up .thumbnail-list__item.slider__slide {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 1.1rem;
+}
+
+.sunrise-product__media .thumbnail-list__item::before {
+  display: none;
+}
+
+.sunrise-product__media .thumbnail {
+  position: static;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--sunrise-accent) 30%, transparent);
+  box-shadow: none;
+}
+
+.sunrise-product__media .thumbnail img,
+.sunrise-product__media .thumbnail__badge,
+.sunrise-product__media .thumbnail-slider > .slider-button {
+  display: none;
+}
+
+.sunrise-product__media .thumbnail[aria-current] {
+  background: var(--sunrise-accent);
+  box-shadow: 0 0 0 0.2rem rgb(var(--color-background)), 0 0 0 0.3rem var(--sunrise-accent);
+}
+
+.sunrise-product__badge {
+  position: absolute;
+  z-index: 4;
+}
+
+.sunrise-product__shelf-life {
+  top: 2.4rem;
+  left: 2.4rem;
+  display: flex;
+  width: 11rem;
+  height: 11rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 0.2rem solid color-mix(in srgb, var(--sunrise-muted) 48%, transparent);
+  border-radius: 50%;
+  color: var(--sunrise-heading);
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  line-height: 1.05;
+  text-align: center;
+  transform: rotate(-8deg);
+}
+
+.sunrise-product__shelf-life span {
+  font-size: 1.45rem;
+}
+
+.sunrise-product__shelf-life strong {
+  max-width: 8rem;
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: var(--font-heading-weight);
+}
+
+.sunrise-product__veg {
+  top: 2.4rem;
+  right: 2.4rem;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 0.2rem solid #54bd59;
+  border-radius: 0.5rem;
+}
+
+.sunrise-product__veg::after {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #54bd59;
+  content: '';
+}
+
+.sunrise-product__info {
+  min-width: 0;
+  padding: clamp(4rem, 5vw, 8rem) clamp(3rem, 5vw, 8rem);
+}
+
+.sunrise-product__info-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.sunrise-product__title {
+  margin: 0;
+  color: var(--sunrise-heading);
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: clamp(4rem, 4vw, 6.4rem);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.sunrise-product__tagline {
+  max-width: 68rem;
+  margin: 1.6rem 0 2.5rem;
+  color: var(--sunrise-muted);
+  font-size: clamp(1.8rem, 1.7vw, 2.8rem);
+  line-height: 1.25;
+}
+
+.sunrise-product__quantity-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 0 0 1rem;
+  padding: 1rem 0 1.6rem;
+  border-bottom: 0.1rem solid var(--sunrise-rule);
+}
+
+.sunrise-product__quantity-label {
+  color: var(--sunrise-heading);
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: 1.8rem;
+  font-weight: var(--font-heading-weight);
+}
+
+.sunrise-product__quantity-field .quantity {
+  min-height: 4rem;
+  width: 12rem;
+}
+
+.sunrise-product__variants {
+  border-bottom: 0.1rem solid var(--sunrise-rule);
+}
+
+.sunrise-product__variant {
+  display: block;
+  margin: 0;
+  padding: 2rem 0;
+  border-bottom: 0.1rem solid var(--sunrise-rule);
+}
+
+.sunrise-product__variant:last-child {
+  border-bottom: 0;
+}
+
+.sunrise-product__variant-form {
+  display: grid;
+  grid-template-columns: 7.2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+.sunrise-product__variant-image {
+  display: grid;
+  width: 7.2rem;
+  height: 7.2rem;
+  place-items: center;
+  border-radius: 0.4rem;
+  background: var(--sunrise-product-media-background, rgba(var(--color-foreground), 0.04));
+  overflow: hidden;
+}
+
+.sunrise-product__variant-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sunrise-product__variant-placeholder {
+  width: 2.8rem;
+  height: 2.8rem;
+  color: var(--sunrise-muted);
+}
+
+.sunrise-product__variant-price {
+  margin: 0;
+  color: var(--sunrise-heading);
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.sunrise-product__variant-label {
+  margin: 0.6rem 0 0;
+  color: var(--sunrise-muted);
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.sunrise-product__add {
+  width: 100%;
+  min-width: 10rem;
+  min-height: 4.6rem;
+  padding: 0.9rem 2.4rem;
+  border: 0.1rem solid var(--sunrise-accent);
+  border-radius: 0.5rem;
+  color: var(--sunrise-accent);
+  background: transparent;
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.sunrise-product__add::after,
+.sunrise-product__add::before {
+  content: none;
+}
+
+.sunrise-product__add:not([disabled]):hover {
+  color: rgb(var(--color-background));
+  background: var(--sunrise-accent);
+}
+
+.sunrise-product__add.loading,
+.sunrise-product__add.loading:hover {
+  color: transparent;
+  background: transparent;
+}
+
+.sunrise-product__add .path {
+  stroke: var(--sunrise-accent);
+}
+
+.sunrise-product__variant-actions {
+  width: 13rem;
+}
+
+.sunrise-product__row-quantity {
+  position: relative;
+  display: grid;
+  width: 13rem;
+  min-height: 4.8rem;
+  grid-template-columns: 1fr 4rem 1fr;
+  align-items: center;
+  border: 0.2rem solid var(--sunrise-accent);
+  border-radius: 0.5rem;
+  color: var(--sunrise-accent);
+  background: rgb(var(--color-background));
+  overflow: hidden;
+}
+
+.sunrise-product__row-quantity[hidden],
+.sunrise-product__add[hidden] {
+  display: none;
+}
+
+.sunrise-product__row-quantity-button {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 4.4rem;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sunrise-product__row-quantity-button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--sunrise-accent) 8%, transparent);
+}
+
+.sunrise-product__row-quantity-button:focus-visible {
+  outline: 0.2rem solid currentColor;
+  outline-offset: -0.4rem;
+}
+
+.sunrise-product__row-quantity-button:disabled {
+  cursor: wait;
+  opacity: 0.45;
+}
+
+.sunrise-product__row-quantity-button .svg-wrapper,
+.sunrise-product__row-quantity-button .icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.sunrise-product__row-quantity-value {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  appearance: textfield;
+  pointer-events: none;
+}
+
+.sunrise-product__row-quantity-value::-webkit-inner-spin-button,
+.sunrise-product__row-quantity-value::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.sunrise-product__row-quantity .loading__spinner {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sunrise-product__row-quantity .loading__spinner .path {
+  stroke: var(--sunrise-accent);
+}
+
+.sunrise-product__row-quantity.is-loading > :not(.loading__spinner) {
+  visibility: hidden;
+}
+
+.sunrise-product__variant .product-form__error-message-wrapper {
+  margin: 1rem 0 0 9.2rem;
+  color: #b3261e;
+}
+
+.sunrise-product__nutrition {
+  margin-top: 4rem;
+  border-color: color-mix(in srgb, var(--sunrise-muted) 36%, transparent);
+}
+
+.sunrise-product__nutrition summary {
+  align-items: center;
+  padding: 1.8rem 0;
+}
+
+.sunrise-product__nutrition-title {
+  margin: 0;
+  color: var(--sunrise-heading);
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: clamp(2.2rem, 2vw, 3rem);
+  font-weight: bold;
+}
+
+.sunrise-product__nutrition-title span {
+  font-family: var(--font-body-family);
+  font-size: 0.75em;
+  font-weight: var(--font-body-weight);
+}
+
+.sunrise-product__nutrition .accordion__content {
+  margin: 0;
+  padding: 0;
+}
+
+.sunrise-product__nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sunrise-product__nutrition-row {
+  min-width: 0;
+  padding: 1.8rem 0;
+  border-bottom: 0.1rem solid color-mix(in srgb, var(--sunrise-muted) 36%, transparent);
+}
+
+.sunrise-product__nutrition-row:nth-child(odd) {
+  padding-right: 2rem;
+}
+
+.sunrise-product__nutrition-label,
+.sunrise-product__nutrition-value {
+  display: block;
+}
+
+.sunrise-product__nutrition-label {
+  color: var(--sunrise-muted);
+  font-size: 1.7rem;
+  line-height: 1.25;
+}
+
+.sunrise-product__nutrition-value {
+  margin-top: 0.9rem;
+  color: var(--sunrise-heading);
+  font-family: "Recoleta Alt", var(--font-heading-family);
+  font-size: 2.4rem;
+  line-height: 1.1;
+}
+
+.sunrise-product__fssai {
+  margin: 2rem 0 0;
+  color: var(--sunrise-muted);
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+}
+
+.sunrise-product__apps {
+  margin-top: 2rem;
+}
+
+.product--large:not(.product--no-media) .product__media-wrapper{
+    max-width: 100%;
+    width: 100%;
+    min-height: unset;
+    align-self: flex-start;
+}
+
+.sunrise-product__info {
+  padding-left: 1.6rem;
+  padding-right: 4rem;
+}
+
+.sunrise-product__nutrition {
+  border-top: none;
+}
+
+.accordion .summary__title+.icon-caret {
+    height: 3.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.accordion details[open]>summary .icon-caret {
+    transform: translateY(-50%)rotate(180deg);
+}
+
+.sunrise-product__row-quantity {
+    width: 100%;
+    border-width: 0.1rem;
+}
+
+@media screen and (max-width: 989px) {
+  .sunrise-product__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sunrise-product__media {
+    min-height: 0;
+  }
+
+  .sunrise-product__info {
+    padding: 4rem 3rem 6rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+
+  .product__media-icon, .thumbnail__badge {
+      top: auto;
+      bottom: 1.2rem;
+      left: auto;
+      right: 1.2rem;
+  }
+
+  .sunrise-product__shelf-life {
+    top: 1.6rem;
+    left: 1.6rem;
+    width: 8.4rem;
+    height: 8.4rem;
+  }
+
+  .sunrise-product__shelf-life span {
+    font-size: 1.15rem;
+  }
+
+  .sunrise-product__shelf-life strong {
+    font-size: 1.4rem;
+  }
+
+  .sunrise-product__veg {
+    top: 1.6rem;
+    right: 1.6rem;
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .sunrise-product__veg::after {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+
+  .sunrise-product__info {
+    padding: 3rem 1.8rem 5rem;
+  }
+
+  .sunrise-product__title {
+    font-size: 4rem;
+  }
+
+  .sunrise-product__tagline {
+    font-size: 1.8rem;
+  }
+
+  .sunrise-product__variant-form {
+    grid-template-columns: 5.8rem minmax(0, 1fr) auto;
+    gap: 1.2rem;
+  }
+
+  .sunrise-product__variant-image {
+    width: 5.8rem;
+    height: 5.8rem;
+  }
+
+  .sunrise-product__variant-price {
+    font-size: 1.9rem;
+  }
+
+  .sunrise-product__variant-label {
+    font-size: 1.5rem;
+  }
+
+  .sunrise-product__add {
+    min-width: 8rem;
+    min-height: 4.2rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  .sunrise-product__variant-actions,
+  .sunrise-product__row-quantity {
+    width: 11rem;
+  }
+
+  .sunrise-product__variant .product-form__error-message-wrapper {
+    margin-left: 7rem;
+  }
+
+  .sunrise-product__nutrition-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sunrise-product__nutrition-row:nth-child(odd) {
+    padding-right: 0;
+  }
+  .sunrise-product__title {
+      font-size: 2.8rem;
+  }
+
+  .sunrise-product__tagline {
+      font-size: 1.6rem;
+  }
+
+  .sunrise-product__row-quantity input {
+      font-size: 1.5rem;
+  }
+
+  .accordion .summary__title+.icon-caret {
+      height: 2rem;
+  }
+
+  .sunrise-product__nutrition-title {
+      font-size: 1.8rem;
+  }
+
+  .sunrise-product__nutrition-label {
+      font-size: 1.4rem;
+  }
+
+  .sunrise-product__nutrition-value {
+      font-size: 1.6rem;
+  }
+
+  .sunrise-product__fssai {
+      font-size: 1.4rem;
+      margin-top: 1.4rem;
+  }
+
+  .sunrise-product__nutrition-row {
+      padding: 1.2rem 0;
+  }
+  .grid--peek.slider .grid__item:first-of-type {
+      margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 389px) {
+  .sunrise-product__variant-form {
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+  }
+
+  .sunrise-product__variant-image {
+    width: 5.2rem;
+    height: 5.2rem;
+  }
+
+  .sunrise-product__variant-actions {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .sunrise-product__row-quantity {
+    width: 100%;
+  }
+
+  .sunrise-product__variant .product-form__error-message-wrapper {
+    margin-left: 0;
+  }
+}

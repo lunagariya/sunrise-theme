@@ -1,0 +1,25 @@
+.sunrise-header .list-menu--inline {
+    gap: 4rem;
+}
+
+.sunrise-header .header__menu-item{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.sunrise-header .header__icon, .sunrise-header .header__icon--cart .icon{
+    height: 2.4rem;
+    width: 2.4rem;
+}
+
+.sunrise-header .header{
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+}
+
+@media screen and (max-width: 989px) {
+    .sunrise-header .header__heading-logo {
+        max-width: 100% !important;
+        width: 15rem;
+    }
+}

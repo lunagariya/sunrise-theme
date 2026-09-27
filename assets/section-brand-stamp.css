@@ -1,0 +1,74 @@
+.brand-stamp {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding-bottom: clamp(6.4rem, 8vw, 10rem);
+  background: #e38397;
+}
+
+.brand-stamp__wave {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: clamp(8rem, 12vw, 18rem);
+  margin-bottom: clamp(-2rem, -1.5vw, -1rem);
+  color: #fff;
+  pointer-events: none;
+}
+
+.brand-stamp__wave svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.brand-stamp__wave path {
+  fill: currentColor;
+}
+
+.brand-stamp__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.brand-stamp__image {
+  display: block;
+  width: min(23rem, calc(100vw - 6.4rem));
+  height: auto;
+}
+
+.brand-stamp__placeholder {
+  width: min(38rem, calc(100vw - 6.4rem));
+  padding: 2rem;
+  color: rgba(18, 18, 18, 0.7);
+  background: #fff8f2;
+  text-align: center;
+}
+
+.brand-stamp__placeholder .placeholder-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.brand-stamp__placeholder p {
+  margin: 1.6rem 0 0;
+}
+
+@media screen and (max-width: 749px) {
+  .brand-stamp {
+    padding-bottom: 4rem;
+  }
+
+  .brand-stamp__wave {
+    height: 9rem;
+    margin-bottom: -1rem;
+  }
+
+  .brand-stamp__image,
+  .brand-stamp__placeholder {
+    width: min(16rem, calc(100vw - 5.6rem));
+  }
+}

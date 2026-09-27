@@ -1,0 +1,423 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+{{ 'section-sunrise-product.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'sunrise-product.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  #SunriseProduct-{{ section.id }} {
+    --sunrise-product-accent: {{ section.settings.accent_color }};
+    --sunrise-product-heading: {{ section.settings.heading_color }};
+    --sunrise-product-muted: {{ section.settings.muted_color }};
+    --sunrise-product-media-background: {{ section.settings.media_background }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'
+  assign short_tagline = product.metafields.custom.short_tagline.value
+  assign first_3d_model = product.media | where: 'media_type', 'model' | first
+-%}
+
+{%- if first_3d_model -%}
+  {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
+  <link
+    id="ModelViewerStyle"
+    rel="stylesheet"
+    href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css"
+    media="print"
+    onload="this.media='all'"
+  >
+  <link
+    id="ModelViewerOverride"
+    rel="stylesheet"
+    href="{{ 'component-model-viewer-ui.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+{%- endif -%}
+
+<sunrise-product
+  id="SunriseProduct-{{ section.id }}"
+  class="sunrise-product section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-product-handle="{{ product.handle | escape }}"
+  data-nutrition-api-url="{{ section.settings.nutrition_api_url | escape }}"
+>
+  <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
+    <div class="sunrise-product__page page-width">
+      <div class="sunrise-product__layout product product--large product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }}">
+        <div class="sunrise-product__media product__media-wrapper">
+          {% render 'product-media-gallery', variant_images: variant_images, first_3d_model: first_3d_model %}
+        </div>
+
+        <div class="sunrise-product__info" id="ProductInfo-{{ section.id }}">
+          <div class="sunrise-product__info-inner">
+            <h1 class="sunrise-product__title">{{ product.title | escape }}</h1>
+
+            <div class="sunrise-product__tagline">
+              {%- if short_tagline != blank -%}
+                {{ short_tagline | escape }}
+              {%- else -%}
+                {{ product.description | strip_html | truncatewords: 28 | escape }}
+              {%- endif -%}
+            </div>
+
+            
+
+            <div class="sunrise-product__variants" aria-label="{{ product.title | escape }} variants">
+              {%- for variant in product.variants -%}
+                {%- liquid
+                  assign row_form_id = 'SunriseVariantForm-' | append: section.id | append: '-' | append: variant.id
+                  assign variant_image = variant.featured_media.preview_image | default: product.featured_media.preview_image
+                  assign cart_quantity = cart | item_count_for_variant: variant.id
+                  assign variant_weight = blank
+                  if variant.weight > 0
+                    assign variant_weight = variant.weight | weight_with_unit: variant.weight_unit
+                  endif
+                -%}
+                <product-form
+                  class="sunrise-product__variant"
+                  data-section-id="{{ section.id }}"
+                  data-ajax-only="true"
+                >
+                  {%- form 'product',
+                    product,
+                    id: row_form_id,
+                    class: 'sunrise-product__variant-form',
+                    novalidate: 'novalidate',
+                    data-type: 'add-to-cart-form'
+                  -%}
+                    <input type="hidden" name="id" value="{{ variant.id }}" class="product-variant-id">
+                    <input
+                      type="hidden"
+                      name="quantity"
+                      value="{{ variant.quantity_rule.min | default: 1 }}"
+                      data-row-quantity
+                    >
+
+                    <div class="sunrise-product__variant-image">
+                      {%- if variant_image != blank -%}
+                        {{
+                          variant_image
+                          | image_url: width: 180
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '72, 108, 144, 180',
+                            sizes: '72px',
+                            alt: variant.title
+                        }}
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'sunrise-product__variant-placeholder placeholder-svg' }}
+                      {%- endif -%}
+                    </div>
+
+                    <div class="sunrise-product__variant-details">
+                      <p class="sunrise-product__variant-price">{{ variant.price | money }}</p>
+                      <p class="sunrise-product__variant-label">
+                        {{ variant.title | escape }}
+                        {%- if variant_weight != blank %} · {% endif -%}
+                        {{ variant_weight }}
+                      </p>
+                    </div>
+
+                    <div class="sunrise-product__variant-actions">
+                      <button
+                        type="submit"
+                        name="add"
+                        class="sunrise-product__add button button--secondary"
+                        data-sunrise-add
+                        {% if cart_quantity > 0 %}hidden{% endif %}
+                        {% unless variant.available %}disabled{% endunless %}
+                      >
+                        <span>{% if variant.available %}Add{% else %}Sold out{% endif %}</span>
+                        <span class="sold-out-message hidden">Sold out</span>
+                        {%- render 'loading-spinner' -%}
+                      </button>
+
+                      <div
+                        class="sunrise-product__row-quantity"
+                        data-sunrise-row-quantity
+                        data-variant-id="{{ variant.id }}"
+                        data-min="{{ variant.quantity_rule.min }}"
+                        data-step="{{ variant.quantity_rule.increment }}"
+                        {% if variant.quantity_rule.max != null %}data-max="{{ variant.quantity_rule.max }}"{% endif %}
+                        role="group"
+                        aria-label="Quantity for {{ variant.title | escape }}"
+                        {% if cart_quantity == 0 %}hidden{% endif %}
+                      >
+                        <button
+                          type="button"
+                          class="sunrise-product__row-quantity-button"
+                          data-quantity-action="decrease"
+                          aria-label="Decrease quantity for {{ variant.title | escape }}"
+                        >
+                          <span class="svg-wrapper">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+                        </button>
+                        <input
+                          class="sunrise-product__row-quantity-value"
+                          type="number"
+                          value="{{ cart_quantity }}"
+                          min="0"
+                          tabindex="-1"
+                          readonly
+                          aria-label="Current quantity for {{ variant.title | escape }}"
+                          aria-live="polite"
+                        >
+                        <button
+                          type="button"
+                          class="sunrise-product__row-quantity-button"
+                          data-quantity-action="increase"
+                          aria-label="Increase quantity for {{ variant.title | escape }}"
+                        >
+                          <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+                        </button>
+                        {%- render 'loading-spinner' -%}
+                      </div>
+                    </div>
+                  {%- endform -%}
+
+                  <div class="product-form__error-message-wrapper" role="alert" hidden>
+                    <span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>
+                    <span class="product-form__error-message"></span>
+                  </div>
+                </product-form>
+              {%- else -%}
+                <p>{{ 'products.product.unavailable' | t }}</p>
+              {%- endfor -%}
+            </div>
+
+            <div
+              class="sunrise-product__nutrition product__accordion accordion"
+              data-sunrise-nutrition
+              hidden
+            >
+              <details id="SunriseNutrition-{{ section.id }}" {% if section.settings.open_nutrition %}open{% endif %}>
+                <summary>
+                  <div class="summary__title">
+                    <h2 class="sunrise-product__nutrition-title accordion__title">
+                      Nutritional information {% if product.metafields.custom.total_nutrition.value != blank %}<span>/ {{ product.metafields.custom.total_nutrition.value | escape }}</span>{% endif %}
+                    </h2>
+                  </div>
+                  {{- 'arrow-down.svg' | inline_asset_content -}}
+                </summary>
+                <div class="accordion__content" id="SunriseNutritionContent-{{ section.id }}">
+                  <div class="sunrise-product__nutrition-grid" data-sunrise-nutrition-grid></div>
+                </div>
+              </details>
+            </div>
+
+            {%- if product.metafields.custom.fssai_number != blank -%}
+              <p class="sunrise-product__fssai">FSSAI – {{ product.metafields.custom.fssai_number.value | escape }}</p>
+            {%- endif -%}
+
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}
+                  <div class="sunrise-product__apps" {{ block.shopify_attributes }}>{% render block %}</div>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      {% render 'product-media-modal', variant_images: variant_images %}
+
+      <script type="application/ld+json">
+        {{ product | structured_data }}
+      </script>
+    </div>
+  </product-component>
+</sunrise-product>
+
+{%- if product.media.size > 0 -%}
+  <script src="{{ 'product-modal.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if first_3d_model -%}
+  <script type="application/json" id="ProductJSON-{{ product.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+  </script>
+  <script src="{{ 'product-model.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sunrise product",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "media_background",
+      "label": "Media panel background",
+      "default": "#FDF5ED"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading and price color",
+      "default": "#7A4B32"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#F26522"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Secondary text color",
+      "default": "#C38E6C"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_nutrition",
+      "label": "Open nutrition by default",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "nutrition_api_url",
+      "label": "Nutrition API endpoint",
+      "default": "https://sunrise-backend.netlify.app/.netlify/functions/get-product"
+    },
+    {
+      "type": "header",
+      "content": "Media gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "default": false,
+      "label": "Enable sticky media"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "large",
+      "label": "Media size"
+    },
+    {
+      "type": "checkbox",
+      "id": "constrain_to_viewport",
+      "default": true,
+      "label": "Constrain media to viewport"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "options": [
+        { "value": "contain", "label": "Contain" },
+        { "value": "cover", "label": "Cover" }
+      ],
+      "default": "contain",
+      "label": "Media fit"
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "options": [
+        { "value": "thumbnail", "label": "Thumbnails" },
+        { "value": "thumbnail_slider", "label": "Thumbnail slider" }
+      ],
+      "default": "thumbnail_slider",
+      "label": "Gallery layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_thumbnails",
+      "options": [
+        { "value": "show", "label": "Show" },
+        { "value": "hide", "label": "Hide" }
+      ],
+      "default": "show",
+      "label": "Mobile navigation"
+    },
+    {
+      "type": "select",
+      "id": "image_zoom",
+      "options": [
+        { "value": "lightbox", "label": "Lightbox" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "lightbox",
+      "label": "Image zoom"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_variants",
+      "default": false,
+      "label": "Hide other variant media"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "default": false,
+      "label": "Loop videos"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sunrise product"
+    }
+  ]
+}
+{% endschema %}

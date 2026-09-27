@@ -1,0 +1,95 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sunrise-product",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "media_background": "#FDF5ED",
+        "heading_color": "#7A4B32",
+        "accent_color": "#F26522",
+        "muted_color": "#C38E6C",
+        "default_shelf_life": "3 weeks",
+        "veg_tag": "veg",
+        "open_nutrition": true,
+        "nutrition_api_url": "https://sunrise-backend.netlify.app/.netlify/functions/get-product",
+        "enable_sticky_info": false,
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "show",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "people-also-bought": {
+      "type": "people-also-bought",
+      "blocks": {
+        "product-1": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product-2": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product-3": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product-4": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "product-1",
+        "product-2",
+        "product-3",
+        "product-4"
+      ],
+      "settings": {
+        "heading": "People also bought",
+        "color_scheme": "scheme-1",
+        "media_background": "#FDF5ED",
+        "heading_color": "#7A4B32",
+        "accent_color": "#F26522",
+        "veg_tag": "veg",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "main",
+    "disclosures",
+    "people-also-bought"
+  ]
+}
